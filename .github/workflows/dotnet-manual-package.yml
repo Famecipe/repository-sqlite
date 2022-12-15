@@ -1,0 +1,29 @@
+name: .NET Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version'
+        default: ''
+        required: true
+
+jobs:
+  package:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.202
+    - name: Add source
+      run: dotnet nuget add source --username rjwehrle --password ${{ secrets.FAMECIPE_NUGET }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Famecipe/index.json"
+    - name: Restore
+      run: dotnet restore
+    - name: Package
+      run: dotnet pack --no-restore --configuration Release -p:PackageVersion=${{ github.event.inputs.version }}
+    - name: Push package
+      run: dotnet nuget push "bin/Release/Famecipe.Services.${{ github.event.inputs.version }}.nupkg"  --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"

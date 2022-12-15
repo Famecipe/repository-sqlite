@@ -5,6 +5,7 @@
     <RootNamespace>Famecipe.Repository.Sqlite</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <RepositoryUrl>https://github.com/Famecipe/repository-sqlite</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
